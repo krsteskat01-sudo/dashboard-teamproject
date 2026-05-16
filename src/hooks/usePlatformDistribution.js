@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import { collection, query, where, getDocs, Timestamp } from 'firebase/firestore'
+import { collection, query, where, onSnapshot, Timestamp } from 'firebase/firestore'
 import { db } from '../firebase/config'
 import { getFirestoreErrorMessage } from '../utils/errorHandler'
 
@@ -17,13 +17,11 @@ export function usePlatformDistribution() {
 
   useEffect(() => {
     let isMounted = true
+    const since   = Timestamp.fromDate(new Date(Date.now() - 30 * 86_400_000))
 
-    async function fetchDistribution() {
-      try {
-        const since = Timestamp.fromDate(new Date(Date.now() - 30 * 86_400_000))
-        const q = query(collection(db, 'scans'), where('timestamp', '>=', since))
-        const snap = await getDocs(q)
-
+    const unsub = onSnapshot(
+      query(collection(db, 'scans'), where('timestamp', '>=', since)),
+      (snap) => {
         if (!isMounted) return
 
         const counts = {}
@@ -47,15 +45,18 @@ export function usePlatformDistribution() {
 
         setDistribution(dist)
         setLoading(false)
-      } catch (err) {
+      },
+      (err) => {
         if (!isMounted) return
         setError(getFirestoreErrorMessage(err))
         setLoading(false)
-      }
-    }
+      },
+    )
 
-    fetchDistribution()
-    return () => { isMounted = false }
+    return () => {
+      isMounted = false
+      unsub()
+    }
   }, [])
 
   return { distribution, loading, error }

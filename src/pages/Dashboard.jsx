@@ -84,7 +84,6 @@ function KpiCard({
   trend,
   color,
   bgColor,
-  accentGrad,
   sparkData,
   sparkKey = 'scans',
   isText = false,
@@ -112,7 +111,7 @@ function KpiCard({
   }
 
   return (
-    <Card variant="default" padding="md" className="kpi-card" style={{ '--kpi-accent': accentGrad }}>
+    <Card variant="default" padding="md" className="kpi-card">
       <div className="kpi-top">
         <div className="kpi-icon" style={{ background: bgColor, color }}>
           <Icon size={20} />
@@ -242,15 +241,13 @@ export default function Dashboard() {
 
       {/* ── KPI grid ────────────────────────────────────────────────────── */}
       <motion.div className="kpi-grid" variants={fadeUp}>
-        {/* NEXT brand palette: blue, yellow, pink, deep blue */}
         <KpiCard
           icon={Activity}
           label="Total Scans"
           value={totalScans}
           trend={scansTrend}
           color="#2F64FF"
-          bgColor="rgba(47,100,255,0.10)"
-          accentGrad="linear-gradient(90deg,#2F64FF,#225AFF)"
+          bgColor="rgba(47,100,255,0.1)"
           sparkData={trends.weekData}
           sparkKey="scans"
           loading={kpiCardsLoading}
@@ -259,9 +256,8 @@ export default function Dashboard() {
           icon={MapPin}
           label="Active Billboards"
           value={activeBillboards}
-          color="#996600"
-          bgColor="rgba(254,212,69,0.12)"
-          accentGrad="linear-gradient(90deg,#FED445,#F59E0B)"
+          color="#FED445"
+          bgColor="rgba(254,212,69,0.1)"
           sparkData={trends.weekData}
           sparkKey="scans"
           loading={kpiCardsLoading}
@@ -271,9 +267,8 @@ export default function Dashboard() {
           label="Engagement Rate"
           value={engagementRate}
           suffix="%"
-          color="#B83D67"
-          bgColor="rgba(255,169,196,0.12)"
-          accentGrad="linear-gradient(90deg,#FFA9C4,#FE3346)"
+          color="#22C55E"
+          bgColor="rgba(34,197,94,0.1)"
           sparkData={trends.weekData}
           sparkKey="scans"
           loading={kpiCardsLoading}
@@ -283,9 +278,8 @@ export default function Dashboard() {
           label="Peak Hour"
           value={peakHour}
           isText
-          color="#234BDB"
-          bgColor="rgba(35,75,219,0.10)"
-          accentGrad="linear-gradient(90deg,#234BDB,#2F64FF)"
+          color="#FFA9C4"
+          bgColor="rgba(255,169,196,0.1)"
           sparkData={trends.dayData}
           sparkKey="scans"
           loading={kpiCardsLoading}
@@ -344,36 +338,35 @@ export default function Dashboard() {
                     >
                       <defs>
                         <linearGradient id="trendGrad" x1="0" y1="0" x2="0" y2="1">
-                          <stop offset="0%"   stopColor="#2F64FF" stopOpacity={0.28} />
-                          <stop offset="55%"  stopColor="#2F64FF" stopOpacity={0.08} />
-                          <stop offset="100%" stopColor="#2F64FF" stopOpacity={0}    />
+                          <stop offset="5%"  stopColor="#2F64FF" stopOpacity={0.3} />
+                          <stop offset="95%" stopColor="#2F64FF" stopOpacity={0}   />
                         </linearGradient>
                       </defs>
                       <CartesianGrid
                         strokeDasharray="3 3"
-                        stroke="rgba(47,100,255,0.07)"
+                        stroke="rgba(255,255,255,0.05)"
                         vertical={false}
                       />
                       <XAxis
                         dataKey={range.xKey}
                         tickFormatter={range.tickFmt}
-                        tick={{ fill: '#9AABBD', fontSize: 11, fontFamily: 'Raleway', fontWeight: 600 }}
+                        tick={{ fill: '#94A3B8', fontSize: 12, fontFamily: 'Raleway' }}
                         axisLine={false}
                         tickLine={false}
                         dy={8}
                       />
                       <YAxis
-                        tick={{ fill: '#9AABBD', fontSize: 11, fontFamily: 'Raleway', fontWeight: 600 }}
+                        tick={{ fill: '#94A3B8', fontSize: 12, fontFamily: 'Raleway' }}
                         axisLine={false}
                         tickLine={false}
                         tickFormatter={(v) => v >= 1000 ? `${(v / 1000).toFixed(0)}k` : v}
-                        width={32}
+                        width={36}
                       />
                       <Tooltip
                         content={(props) => (
                           <ChartTooltip {...props} labelFmt={range.labelFmt} />
                         )}
-                        cursor={{ stroke: 'rgba(47,100,255,0.20)', strokeWidth: 1 }}
+                        cursor={{ stroke: 'rgba(47,100,255,0.3)', strokeWidth: 1 }}
                       />
                       <Area
                         type="monotone"
@@ -588,13 +581,12 @@ export default function Dashboard() {
                         <Tooltip
                           formatter={(v) => [`${v}%`, 'Share']}
                           contentStyle={{
-                            background: 'var(--chart-tooltip-bg)',
-                            border: '1px solid var(--chart-tooltip-border)',
-                            borderRadius: '14px',
+                            background: '#131A2E',
+                            border: '1px solid rgba(255,255,255,0.08)',
+                            borderRadius: '12px',
                             fontFamily: 'Raleway',
                             fontSize: 13,
-                            color: 'var(--chart-tooltip-color)',
-                            boxShadow: '0 8px 28px rgba(47,100,255,0.12)',
+                            color: '#F9F9F9',
                           }}
                         />
                       </PieChart>

@@ -6,7 +6,6 @@ import {
   Plus, Search, MoreHorizontal, Edit2, Trash2, Eye,
   Activity, MapPin, AlertTriangle, LayoutGrid, List, Map,
   Navigation, Copy, QrCode, ToggleLeft, ToggleRight,
-  CheckCircle2,
 } from 'lucide-react'
 
 import { Card, Button, Input, Select, Badge, Modal, EmptyState, SkeletonLoader } from '../components/ui'
@@ -16,6 +15,7 @@ import { useCampaignsList } from '../hooks/useCampaignsList'
 import { createBillboard, updateBillboard, deleteBillboard } from '../firebase/billboards'
 import BillboardQR from '../components/shared/BillboardQR'
 import BillboardsMap from '../components/shared/BillboardsMap'
+import LocationPicker from '../components/shared/LocationPicker'
 import { useDocumentTitle } from '../hooks/useDocumentTitle'
 import './Billboards.css'
 
@@ -343,7 +343,7 @@ function CityField({ register, watch, setValue, error, existingCities }) {
 
 function BillboardFormModal({ isOpen, mode, billboard, campaigns, existingCities, onClose, onSaved }) {
   const { showToast } = useToast()
-  const [geoLoading,  setGeoLoading]  = useState(false)
+  const [pickedCoords,  setPickedCoords]  = useState(null)
   const [regenWarning, setRegenWarning] = useState(false)
 
   const {
@@ -351,14 +351,7 @@ function BillboardFormModal({ isOpen, mode, billboard, campaigns, existingCities
     formState: { errors, isSubmitting },
   } = useForm()
 
-  const watchLat    = watch('lat')
-  const watchLng    = watch('lng')
   const watchActive = watch('isActive')
-
-  const coordsValid = watchLat != null && watchLng != null &&
-    !isNaN(Number(watchLat)) && !isNaN(Number(watchLng)) &&
-    Number(watchLat) >= -90  && Number(watchLat) <= 90 &&
-    Number(watchLng) >= -180 && Number(watchLng) <= 180
 
   const campaignOptions = campaigns.map(c => ({ value: c.id, label: c.name }))
 
@@ -370,44 +363,23 @@ function BillboardFormModal({ isOpen, mode, billboard, campaigns, existingCities
         campaignId:   billboard.campaignId,
         locationName: billboard.locationName,
         city:         billboard.city,
-        lat:          billboard.coordinates?.lat ?? '',
-        lng:          billboard.coordinates?.lng ?? '',
         isActive:     billboard.isActive ?? true,
       })
+      setPickedCoords(
+        billboard.coordinates?.lat != null
+          ? { lat: billboard.coordinates.lat, lng: billboard.coordinates.lng }
+          : null
+      )
     } else {
       reset({
         campaignId:   campaigns[0]?.id ?? '',
         locationName: '',
         city:         '',
-        lat:          '',
-        lng:          '',
         isActive:     true,
       })
+      setPickedCoords(null)
     }
   }, [isOpen, mode, billboard, campaigns, reset])
-
-  function handleGeolocate() {
-    if (!navigator.geolocation) {
-      showToast({ variant: 'error', title: 'Not supported', message: 'Geolocation is not supported by your browser.' })
-      return
-    }
-    setGeoLoading(true)
-    navigator.geolocation.getCurrentPosition(
-      (pos) => {
-        setValue('lat', parseFloat(pos.coords.latitude.toFixed(6)),  { shouldValidate: true })
-        setValue('lng', parseFloat(pos.coords.longitude.toFixed(6)), { shouldValidate: true })
-        setGeoLoading(false)
-      },
-      (err) => {
-        setGeoLoading(false)
-        if (err.code === err.PERMISSION_DENIED) {
-          showToast({ variant: 'error', title: 'Permission denied', message: 'Location permission denied. Enable it in your browser settings.' })
-        } else {
-          showToast({ variant: 'error', title: 'Location error', message: 'Unable to retrieve your location.' })
-        }
-      }
-    )
-  }
 
   async function handleRegenQR() {
     if (!regenWarning) { setRegenWarning(true); return }
@@ -424,8 +396,8 @@ function BillboardFormModal({ isOpen, mode, billboard, campaigns, existingCities
   }
 
   async function onSubmit(data) {
-    const coordinates = (data.lat !== '' && data.lng !== '')
-      ? { lat: parseFloat(data.lat), lng: parseFloat(data.lng) }
+    const coordinates = pickedCoords
+      ? { lat: Number(pickedCoords.lat), lng: Number(pickedCoords.lng) }
       : null
 
     const payload = {
@@ -454,126 +426,92 @@ function BillboardFormModal({ isOpen, mode, billboard, campaigns, existingCities
   }
 
   return (
-    <Modal isOpen={isOpen} onClose={onClose} title={mode === 'edit' ? 'Edit Billboard' : 'New Billboard'} size="md">
+    <Modal isOpen={isOpen} onClose={onClose} title={mode === 'edit' ? 'Edit Billboard' : 'New Billboard'} size="lg">
       <Modal.Header />
       <form onSubmit={handleSubmit(onSubmit)} noValidate>
         <Modal.Body>
           <div className="form-fields">
+            <div className="form-two-col">
 
-            {/* Campaign */}
-            <Controller
-              name="campaignId"
-              control={control}
-              rules={{ required: 'Campaign is required' }}
-              render={({ field }) => (
-                <Select
-                  label="Campaign"
-                  options={campaignOptions}
-                  placeholder="Select a campaign"
-                  error={errors.campaignId?.message}
-                  {...field}
+              {/* Left column: text fields + status */}
+              <div className="form-col">
+                <Controller
+                  name="campaignId"
+                  control={control}
+                  rules={{ required: 'Campaign is required' }}
+                  render={({ field }) => (
+                    <Select
+                      label="Campaign"
+                      options={campaignOptions}
+                      placeholder="Select a campaign"
+                      error={errors.campaignId?.message}
+                      {...field}
+                    />
+                  )}
                 />
-              )}
-            />
 
-            {/* Location Name */}
-            <Input
-              label="Location Name"
-              placeholder="e.g. City Center Billboard"
-              error={errors.locationName?.message}
-              {...register('locationName', {
-                required:  'Location name is required',
-                minLength: { value: 3,   message: 'At least 3 characters' },
-                maxLength: { value: 100, message: 'Max 100 characters' },
-                setValueAs: v => v.trim(),
-              })}
-            />
-
-            {/* City with autocomplete */}
-            <CityField
-              register={register}
-              watch={watch}
-              setValue={setValue}
-              error={errors.city?.message}
-              existingCities={existingCities}
-            />
-
-            {/* Coordinates */}
-            <div className="form-field">
-              <label className="form-label">Coordinates <span className="form-optional">(optional)</span></label>
-              <div className="form-row">
                 <Input
-                  type="number"
-                  step="0.000001"
-                  placeholder="Latitude (-90 to 90)"
-                  error={errors.lat?.message}
-                  {...register('lat', {
-                    min: { value: -90,  message: 'Min -90' },
-                    max: { value: 90,   message: 'Max 90' },
-                    validate: v => v === '' || v === null || (!isNaN(Number(v))) || 'Invalid number',
+                  label="Location Name"
+                  placeholder="e.g. City Center Billboard"
+                  error={errors.locationName?.message}
+                  {...register('locationName', {
+                    required:   'Location name is required',
+                    minLength:  { value: 3,   message: 'At least 3 characters' },
+                    maxLength:  { value: 100, message: 'Max 100 characters' },
+                    setValueAs: v => v.trim(),
                   })}
                 />
-                <Input
-                  type="number"
-                  step="0.000001"
-                  placeholder="Longitude (-180 to 180)"
-                  error={errors.lng?.message}
-                  {...register('lng', {
-                    min: { value: -180, message: 'Min -180' },
-                    max: { value: 180,  message: 'Max 180' },
-                    validate: v => v === '' || v === null || (!isNaN(Number(v))) || 'Invalid number',
-                  })}
+
+                <CityField
+                  register={register}
+                  watch={watch}
+                  setValue={setValue}
+                  error={errors.city?.message}
+                  existingCities={existingCities}
                 />
+
+                <div className="form-field">
+                  <label className="form-label">Status</label>
+                  <Controller
+                    name="isActive"
+                    control={control}
+                    render={({ field }) => (
+                      <div
+                        className={`active-toggle ${field.value ? 'active-toggle--on' : 'active-toggle--off'}`}
+                        onClick={() => field.onChange(!field.value)}
+                        role="switch"
+                        aria-checked={field.value}
+                        tabIndex={0}
+                        onKeyDown={(e) => { if (e.key === ' ' || e.key === 'Enter') field.onChange(!field.value) }}
+                      >
+                        <span className="active-toggle__track">
+                          <span className="active-toggle__thumb" />
+                        </span>
+                        <span className="active-toggle__label">
+                          {field.value ? 'Active' : 'Inactive'}
+                        </span>
+                      </div>
+                    )}
+                  />
+                </div>
               </div>
-              <div className="coords-footer">
-                <Button
-                  type="button"
-                  variant="secondary"
-                  size="sm"
-                  leftIcon={<Navigation size={13} />}
-                  onClick={handleGeolocate}
-                  loading={geoLoading}
-                >
-                  Use Current Location
-                </Button>
-                {(watchLat !== '' && watchLng !== '') && (
-                  <span className={`coords-status ${coordsValid ? 'coords-status--valid' : 'coords-status--invalid'}`}>
-                    {coordsValid
-                      ? <><CheckCircle2 size={13} /> Coordinates valid</>
-                      : <><AlertTriangle size={13} /> Invalid coordinates</>
-                    }
-                  </span>
-                )}
+
+              {/* Right column: map picker */}
+              <div className="form-col">
+                <div className="form-field">
+                  <label className="form-label">Location <span className="form-optional">(optional)</span></label>
+                  <LocationPicker
+                    initialLat={mode === 'edit' ? billboard?.coordinates?.lat : undefined}
+                    initialLng={mode === 'edit' ? billboard?.coordinates?.lng : undefined}
+                    onLocationChange={setPickedCoords}
+                    height={230}
+                  />
+                </div>
               </div>
+
             </div>
 
-            {/* Is Active toggle */}
-            <div className="form-field">
-              <label className="form-label">Status</label>
-              <Controller
-                name="isActive"
-                control={control}
-                render={({ field }) => (
-                  <div
-                    className={`active-toggle ${field.value ? 'active-toggle--on' : 'active-toggle--off'}`}
-                    onClick={() => field.onChange(!field.value)}
-                    role="switch"
-                    aria-checked={field.value}
-                    tabIndex={0}
-                    onKeyDown={(e) => { if (e.key === ' ' || e.key === 'Enter') field.onChange(!field.value) }}
-                  >
-                    <span className="active-toggle__track">
-                      <span className="active-toggle__thumb" />
-                    </span>
-                    <span className="active-toggle__label">
-                      {field.value ? 'Active' : 'Inactive'}
-                    </span>
-                  </div>
-                )}
-              />
-            </div>
-
-            {/* Edit-only: QR preview + regen */}
+            {/* Edit-only: QR preview + regen — full width below the grid */}
             {mode === 'edit' && billboard?.qrCodeUrl && (
               <div className="form-field">
                 <label className="form-label">QR Code</label>
