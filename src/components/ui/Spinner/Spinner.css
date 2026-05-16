@@ -1,0 +1,96 @@
+/* ── Spinner ── */
+.spinner {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.spinner svg {
+  width: 100%;
+  height: 100%;
+  animation: spin-slow 0.8s linear infinite;
+}
+
+.spinner__track {
+  stroke: var(--color-border);
+  transition: stroke var(--t-slow);
+}
+.spinner__fill {
+  stroke-linecap: round;
+  stroke-dasharray: 50 100;
+  transform-origin: center;
+  transition: stroke var(--t-slow);
+}
+
+.spinner--primary .spinner__fill { stroke: var(--color-primary); }
+.spinner--white   .spinner__fill { stroke: #fff; }
+.spinner--muted   .spinner__fill { stroke: var(--color-text-muted); }
+
+/* ── Full-page overlay ── */
+.spinner-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--color-bg-overlay);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  transition: background var(--t-slow);
+}
+
+.spinner-page-inner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-4);
+}
+
+/* ── Labeled inline ── */
+.spinner-labeled {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-3);
+}
+
+.spinner__label {
+  font-family: var(--font-primary);
+  font-size: 14px;
+  color: var(--color-text-muted);
+  margin: 0;
+}
+
+/* ── Skeleton ── */
+.skeleton {
+  display: block;
+  border-radius: var(--radius-sm);
+  background: var(--skeleton-base);
+  flex-shrink: 0;
+  /* Prevent skeleton from overflowing */
+  max-width: 100%;
+}
+
+.skeleton--animate {
+  background: linear-gradient(
+    90deg,
+    var(--skeleton-base)  20%,
+    var(--skeleton-shine) 50%,
+    var(--skeleton-base)  80%
+  );
+  background-size: 300% 100%;
+  animation: shimmer 1.8s ease-in-out infinite;
+}
+
+.skeleton--text   { border-radius: 4px; height: 14px; }
+.skeleton--circle { border-radius: 50%; }
+.skeleton--rect   { border-radius: var(--radius-md); }
+
+.skeleton-lines {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  width: 100%;
+}

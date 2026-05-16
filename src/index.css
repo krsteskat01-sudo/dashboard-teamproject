@@ -1,0 +1,6 @@
+/*
+  index.css — entry-point reset only.
+  All design tokens, theme variables, and component styles
+  live in src/styles/global.css which is imported in main.jsx.
+  This file exists to satisfy Vite's default template; keep it minimal.
+*/

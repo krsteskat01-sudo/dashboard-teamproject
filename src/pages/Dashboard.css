@@ -1,0 +1,661 @@
+/* ============================================
+   DASHBOARD — NEXT SaaS — production CSS
+   ============================================ */
+
+/* ── Page shell ── */
+.dashboard {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-6);
+  /* Never taller than necessary */
+  min-height: 0;
+  /* Contain any stray overflows */
+  overflow: hidden;
+}
+
+/* ── Page header ── */
+.dash-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-4);
+  flex-wrap: wrap;
+  /* Prevent header from shrinking below its content */
+  flex-shrink: 0;
+}
+
+.dash-greeting {
+  font-family: var(--font-display);
+  font-size: clamp(20px, 2.4vw, 28px);
+  font-weight: 400;
+  color: var(--color-text);
+  line-height: 1.2;
+  letter-spacing: -0.5px;
+  margin-bottom: 2px;
+  /* Prevent text from overflowing on small screens */
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  max-width: 100%;
+}
+
+.dash-date {
+  font-family: var(--font-primary);
+  font-size: 13px;
+  color: var(--color-text-muted);
+  font-weight: 500;
+  letter-spacing: 0.2px;
+}
+
+/* ============================================
+   KPI GRID
+   ============================================ */
+.kpi-grid {
+  display: grid;
+  /* Fluid columns: min 200px, max equal split */
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: var(--space-4);
+  /* Don't stretch rows unevenly */
+  align-items: stretch;
+}
+
+/* ── KPI Card ── */
+.kpi-card {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  position: relative;
+  overflow: hidden;
+  /* Equal height cards in the row */
+  height: 100%;
+}
+
+/* Bottom accent line per card */
+.kpi-card::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 2.5px;
+  background: var(--kpi-accent, var(--grad-primary));
+  border-radius: 0 0 var(--radius-lg) var(--radius-lg);
+  opacity: 0.65;
+  transition: opacity var(--t-base);
+}
+.kpi-card:hover::after { opacity: 1; }
+
+.kpi-top {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  min-width: 0;
+}
+
+.kpi-icon {
+  width: 42px;
+  height: 42px;
+  min-width: 42px; /* never collapse */
+  border-radius: var(--radius-sm);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.kpi-label {
+  font-family: var(--font-primary);
+  font-size: 10.5px;
+  font-weight: 700;
+  color: var(--color-text-muted);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  /* Truncate very long labels */
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  flex: 1;
+  min-width: 0;
+}
+
+.kpi-value {
+  font-family: var(--font-display);
+  font-size: clamp(24px, 2.8vw, 34px);
+  font-weight: 400;
+  color: var(--color-text);
+  line-height: 1;
+  letter-spacing: -1px;
+  /* Prevent overflow on tiny cards */
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.kpi-trend {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-family: var(--font-primary);
+  font-size: 11.5px;
+  font-weight: 700;
+  padding: 3px 8px;
+  border-radius: var(--radius-full);
+  /* Don't stretch full width */
+  align-self: flex-start;
+}
+.kpi-trend--up   { color: var(--color-success); background: rgba(34, 197, 94, 0.10); }
+.kpi-trend--down { color: var(--color-danger);  background: rgba(254, 51, 70, 0.10); }
+
+.kpi-trend-gap { height: 22px; flex-shrink: 0; }
+
+/* Sparkline pushed to bottom */
+.kpi-sparkline {
+  margin-top: auto;
+  /* Prevent chart from overflowing card */
+  overflow: hidden;
+  flex-shrink: 0;
+}
+
+/* Skeleton layout helpers */
+.kpi-skel-row { display: flex; align-items: center; gap: var(--space-3); }
+
+/* ============================================
+   MAIN GRID — Chart + Activity
+   ============================================ */
+.dash-main-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 3fr) minmax(0, 2fr);
+  gap: var(--space-4);
+  align-items: start;
+}
+
+/* Chart card should match activity card height */
+.dash-chart-card {
+  min-height: 0;
+  overflow: hidden;
+}
+
+.dash-activity-card {
+  min-height: 0;
+  overflow: hidden;
+}
+
+/* ============================================
+   SHARED CARD LABELS
+   ============================================ */
+.dash-card-title {
+  font-family: var(--font-display);
+  font-size: clamp(15px, 1.4vw, 18px);
+  font-weight: 400;
+  color: var(--color-text);
+  margin: 0;
+  letter-spacing: -0.3px;
+  line-height: 1.3;
+  white-space: nowrap;
+}
+
+.dash-card-subtitle {
+  font-family: var(--font-primary);
+  font-size: 12px;
+  color: var(--color-text-muted);
+  margin-top: 3px;
+  font-weight: 500;
+  white-space: nowrap;
+}
+
+/* ============================================
+   RANGE TOGGLE (Day / Week / Month)
+   ============================================ */
+.range-toggle {
+  display: flex;
+  gap: 2px;
+  background: rgba(47, 100, 255, 0.05);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  padding: 3px;
+  flex-shrink: 0;
+}
+
+.range-btn {
+  padding: 5px 11px;
+  border-radius: 7px;
+  font-family: var(--font-primary);
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--color-text-muted);
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  transition: all var(--t-fast);
+  white-space: nowrap;
+}
+.range-btn:hover:not(.range-btn--active) {
+  color: var(--color-primary);
+  background: rgba(47, 100, 255, 0.06);
+}
+.range-btn--active {
+  background: var(--grad-primary);
+  color: #fff;
+  box-shadow: 0 2px 10px rgba(47, 100, 255, 0.35);
+}
+
+/* ============================================
+   CHART WRAPPER + TOOLTIP
+   ============================================ */
+.dash-chart-wrap {
+  margin-top: var(--space-4);
+  /* Constrain so chart never overflows card */
+  max-width: 100%;
+  overflow: hidden;
+}
+
+.dash-chart-tooltip {
+  background: var(--chart-tooltip-bg);
+  border: 1px solid var(--chart-tooltip-border);
+  border-radius: var(--radius-md);
+  padding: var(--space-3) var(--space-4);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  box-shadow: var(--shadow-md);
+  /* Keep tooltip above chart */
+  z-index: 10;
+  pointer-events: none;
+}
+
+.dash-chart-tooltip-date {
+  font-family: var(--font-primary);
+  font-size: 10px;
+  color: var(--color-text-muted);
+  margin-bottom: 4px;
+  text-transform: uppercase;
+  letter-spacing: 0.9px;
+  font-weight: 700;
+}
+
+.dash-chart-tooltip-value {
+  font-family: var(--font-display);
+  font-size: 19px;
+  font-weight: 400;
+  color: var(--chart-tooltip-color);
+  letter-spacing: -0.5px;
+}
+
+/* ============================================
+   LIVE ACTIVITY FEED
+   ============================================ */
+.activity-list {
+  list-style: none;
+  max-height: 360px;
+  overflow-y: auto;
+  overflow-x: hidden;
+  margin-top: var(--space-2);
+  /* Custom thin scrollbar */
+  scrollbar-width: thin;
+  scrollbar-color: var(--scroll-thumb) transparent;
+}
+.activity-list::-webkit-scrollbar       { width: 4px; }
+.activity-list::-webkit-scrollbar-track { background: transparent; }
+.activity-list::-webkit-scrollbar-thumb {
+  background: var(--scroll-thumb);
+  border-radius: 2px;
+}
+
+.activity-item {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  padding: var(--space-2) var(--space-2);
+  border-radius: var(--radius-sm);
+  transition: background var(--t-fast), transform var(--t-fast);
+  cursor: default;
+  /* Prevent row from overflowing */
+  min-width: 0;
+}
+.activity-item:hover {
+  background: rgba(47, 100, 255, 0.05);
+  transform: translateX(2px);
+}
+
+.activity-device {
+  width: 34px;
+  height: 34px;
+  min-width: 34px; /* no collapse */
+  border-radius: var(--radius-sm);
+  background: rgba(47, 100, 255, 0.07);
+  border: 1px solid var(--color-border);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--color-primary);
+  flex-shrink: 0;
+  transition: background var(--t-fast), border-color var(--t-fast);
+}
+.activity-item:hover .activity-device {
+  background: rgba(47, 100, 255, 0.12);
+  border-color: var(--color-border-hover);
+}
+
+.activity-info {
+  flex: 1;
+  min-width: 0; /* text-overflow on children */
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.activity-location {
+  font-family: var(--font-primary);
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--color-text);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.dash-platform-tag {
+  display: inline-block;
+  padding: 1.5px 8px;
+  border-radius: var(--radius-full);
+  font-family: var(--font-primary);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.3px;
+  /* Don't grow wider than needed */
+  align-self: flex-start;
+}
+
+.activity-time {
+  font-family: var(--font-primary);
+  font-size: 11px;
+  color: var(--color-text-soft);
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.activity-footer {
+  margin-top: var(--space-3);
+  padding-top: var(--space-3);
+  border-top: 1px solid var(--color-border-soft);
+  flex-shrink: 0;
+}
+
+.activity-viewall {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-family: var(--font-primary);
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--color-primary);
+  transition: opacity var(--t-fast), gap var(--t-fast);
+}
+.activity-viewall:hover { opacity: 0.72; gap: 8px; }
+
+/* ============================================
+   BOTTOM GRID — Billboards + Donut
+   ============================================ */
+.dash-bottom-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: var(--space-4);
+  align-items: start;
+}
+
+/* ── Top Billboards list ── */
+.billboard-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  margin-top: var(--space-2);
+}
+
+.billboard-item {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  transition: transform var(--t-fast);
+  min-width: 0;
+}
+.billboard-item:hover { transform: translateX(2px); }
+
+.billboard-rank {
+  width: 30px;
+  height: 30px;
+  min-width: 30px;
+  border-radius: 50%;
+  background: var(--grad-primary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-primary);
+  font-size: 12px;
+  font-weight: 800;
+  color: #fff;
+  flex-shrink: 0;
+  box-shadow: 0 2px 10px rgba(47, 100, 255, 0.32);
+}
+/* Gold for rank 1 */
+.billboard-item:first-child .billboard-rank {
+  background: linear-gradient(135deg, #FED445 0%, #FFB400 100%);
+  box-shadow: 0 2px 10px rgba(254, 212, 69, 0.40);
+  color: #5A3E00;
+}
+
+.billboard-info {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+}
+
+.billboard-location-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-2);
+}
+
+.billboard-location {
+  font-family: var(--font-primary);
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--color-text);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  flex: 1;
+  min-width: 0;
+}
+
+.billboard-change {
+  font-family: var(--font-primary);
+  font-size: 11px;
+  font-weight: 800;
+  flex-shrink: 0;
+  padding: 2px 6px;
+  border-radius: var(--radius-full);
+}
+.billboard-change--up   { color: var(--color-success); background: rgba(34, 197, 94, 0.10); }
+.billboard-change--down { color: var(--color-danger);  background: rgba(254, 51, 70, 0.10); }
+
+.billboard-bar-track {
+  height: 4px;
+  background: rgba(47, 100, 255, 0.07);
+  border-radius: var(--radius-full);
+  overflow: hidden;
+}
+.billboard-bar-fill {
+  height: 100%;
+  border-radius: var(--radius-full);
+  background: var(--grad-primary);
+}
+
+.billboard-scans {
+  font-family: var(--font-primary);
+  font-size: 13px;
+  font-weight: 800;
+  color: var(--color-primary);
+  flex-shrink: 0;
+  min-width: 48px;
+  text-align: right;
+}
+
+/* ── Platform donut ── */
+.platform-donut-wrap {
+  position: relative;
+  margin-top: var(--space-2);
+  /* Prevent chart from overflowing card */
+  overflow: hidden;
+}
+
+.platform-donut-center {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+  pointer-events: none;
+  /* Fixed width so it doesn't shift */
+  width: 80px;
+}
+
+.platform-donut-total {
+  display: block;
+  font-family: var(--font-display);
+  font-size: 22px;
+  font-weight: 400;
+  color: var(--color-text);
+  line-height: 1.1;
+  letter-spacing: -0.8px;
+}
+
+.platform-donut-label {
+  display: block;
+  font-family: var(--font-primary);
+  font-size: 10px;
+  color: var(--color-text-muted);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-top: 2px;
+  font-weight: 700;
+}
+
+/* ── Platform legend ── */
+.platform-legend {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  padding: var(--space-2) 0 0;
+}
+
+.platform-legend-item {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  transition: transform var(--t-fast);
+  min-width: 0;
+}
+.platform-legend-item:hover { transform: translateX(3px); }
+
+.platform-legend-dot {
+  width: 8px;
+  height: 8px;
+  min-width: 8px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.platform-legend-name {
+  flex: 1;
+  min-width: 0;
+  font-family: var(--font-primary);
+  font-size: 13px;
+  color: var(--color-text-muted);
+  font-weight: 500;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.platform-legend-pct {
+  font-family: var(--font-primary);
+  font-size: 13px;
+  font-weight: 800;
+  color: var(--color-text);
+  flex-shrink: 0;
+}
+
+/* ============================================
+   SKELETON HELPERS
+   ============================================ */
+.dash-skel-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: var(--space-4);
+  padding-bottom: var(--space-4);
+  border-bottom: 1px solid var(--color-border-soft);
+  gap: var(--space-4);
+}
+.dash-skel-list { display: flex; flex-direction: column; gap: var(--space-4); }
+.dash-skel-row  { display: flex; align-items: center; gap: var(--space-3); }
+
+/* ============================================
+   RESPONSIVE BREAKPOINTS
+   ============================================ */
+
+/* ── Large desktop: more breathing room ── */
+@media (min-width: 1400px) {
+  .dashboard { gap: var(--space-8); }
+  .kpi-grid  { gap: var(--space-5); }
+}
+
+/* ── Standard laptop ── */
+@media (max-width: 1280px) {
+  .kpi-value { font-size: clamp(22px, 2.5vw, 30px); }
+}
+
+/* ── Below 1100px: stack main grid ── */
+@media (max-width: 1100px) {
+  .dash-main-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .dash-bottom-grid {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  }
+}
+
+/* ── Tablet ── */
+@media (max-width: 900px) {
+  .kpi-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--space-3);
+  }
+  .dash-bottom-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .dash-greeting { white-space: normal; }
+}
+
+/* ── Mobile ── */
+@media (max-width: 600px) {
+  .dashboard { gap: var(--space-4); }
+  .kpi-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--space-3);
+  }
+  .kpi-value { font-size: 22px; }
+  .dash-header { flex-direction: column; align-items: flex-start; gap: var(--space-3); }
+  .range-toggle { align-self: flex-start; }
+  /* Collapse card header on mobile */
+  .dash-main-grid { grid-template-columns: minmax(0, 1fr); }
+}
+
+/* ── Very small mobile ── */
+@media (max-width: 380px) {
+  .kpi-grid { grid-template-columns: minmax(0, 1fr); }
+}

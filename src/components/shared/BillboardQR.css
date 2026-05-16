@@ -1,0 +1,59 @@
+.billboard-qr {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.billboard-qr__wrapper {
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  line-height: 0;
+  border: 1px solid var(--color-border);
+  padding: var(--space-2);
+  background: #131A2E;
+}
+
+.billboard-qr__label {
+  font-size: 12px;
+  color: var(--color-text-muted);
+  text-align: center;
+  max-width: 200px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.billboard-qr__download {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1);
+  padding: var(--space-2) var(--space-3);
+  border-radius: var(--radius-sm);
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--color-text-muted);
+  background: var(--color-glass);
+  border: 1px solid var(--color-border);
+  cursor: pointer;
+  transition: color var(--transition-fast), background var(--transition-fast);
+}
+
+.billboard-qr__download:hover {
+  color: var(--color-text);
+  background: var(--color-bg-elevated);
+}
+
+/* Preview variant — compact, no gap */
+.billboard-qr--preview {
+  gap: 0;
+}
+.billboard-qr--preview .billboard-qr__wrapper {
+  padding: var(--space-1);
+  border-radius: var(--radius-sm);
+}
+
+/* Large variant */
+.billboard-qr--large .billboard-qr__wrapper {
+  padding: var(--space-3);
+}
