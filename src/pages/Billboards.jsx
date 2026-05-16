@@ -540,13 +540,17 @@ function BillboardFormModal({ isOpen, mode, billboard, campaigns, existingCities
             )}
 
           </div>
+
+          {/* Submit button inside scrollable body — always reachable */}
+          <div className="form-submit-row">
+            <Button variant="secondary" type="button" onClick={onClose}>Cancel</Button>
+            <Button type="submit" loading={isSubmitting}>
+              {mode === 'edit' ? 'Save Changes' : 'Create Billboard'}
+            </Button>
+          </div>
+
         </Modal.Body>
-        <Modal.Footer>
-          <Button variant="secondary" type="button" onClick={onClose}>Cancel</Button>
-          <Button type="submit" loading={isSubmitting}>
-            {mode === 'edit' ? 'Save Changes' : 'Create Billboard'}
-          </Button>
-        </Modal.Footer>
+        <Modal.Footer />
       </form>
     </Modal>
   )

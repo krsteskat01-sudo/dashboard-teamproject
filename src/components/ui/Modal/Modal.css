@@ -116,3 +116,6 @@
   flex-shrink: 0;
   flex-wrap: wrap;
 }
+.modal-footer:empty {
+  display: none;
+}
