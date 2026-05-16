@@ -1,0 +1,345 @@
+/* ============================================
+   LOGIN PAGE — dual-theme, NEXT palette
+   ============================================ */
+
+.login-container {
+  position: relative;
+  min-height: 100dvh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-6);
+  overflow: hidden;
+  background: var(--bg-mesh);
+  background-attachment: fixed;
+  transition: background var(--t-slow);
+}
+
+/* ── Animated blobs ── */
+.login-bg {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  z-index: 0;
+  pointer-events: none;
+}
+
+.bg-blob {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(90px);
+  will-change: transform;
+  transform: translateZ(0);
+}
+
+.bg-blob-1 {
+  width: clamp(280px, 40vw, 560px);
+  height: clamp(280px, 40vw, 560px);
+  background: var(--blob-1);
+  top: -18%;
+  left: -12%;
+  opacity: 0.45;
+  animation: float-slow 22s ease-in-out infinite;
+}
+
+.bg-blob-2 {
+  width: clamp(220px, 32vw, 460px);
+  height: clamp(220px, 32vw, 460px);
+  background: var(--blob-2);
+  bottom: -12%;
+  right: -10%;
+  opacity: 0.36;
+  animation: float-med 28s ease-in-out infinite;
+}
+
+.bg-blob-3 {
+  width: clamp(160px, 24vw, 340px);
+  height: clamp(160px, 24vw, 340px);
+  background: var(--blob-3);
+  top: 55%;
+  left: 55%;
+  opacity: 0.26;
+  animation: float-slow 36s ease-in-out infinite reverse;
+}
+
+.bg-grid {
+  position: absolute;
+  inset: 0;
+  background-image:
+    radial-gradient(circle, var(--color-border-soft) 1px, transparent 1px);
+  background-size: 28px 28px;
+  mask-image: radial-gradient(ellipse 80% 80% at 50% 50%, black 15%, transparent 72%);
+  -webkit-mask-image: radial-gradient(ellipse 80% 80% at 50% 50%, black 15%, transparent 72%);
+  opacity: 0.5;
+}
+
+/* ── Login card ── */
+.login-card {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  max-width: 440px;
+  background: var(--color-bg-elevated);
+  backdrop-filter: blur(24px) saturate(1.4);
+  -webkit-backdrop-filter: blur(24px) saturate(1.4);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-xl);
+  padding: var(--space-8);
+  box-shadow: var(--shadow-xl);
+  transition: background var(--t-slow), border-color var(--t-slow), box-shadow var(--t-slow);
+}
+
+/* Gradient top accent */
+.login-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 20px;
+  right: 20px;
+  height: 1px;
+  background: linear-gradient(90deg,
+    transparent 0%,
+    rgba(47, 100, 255, 0.40) 35%,
+    rgba(35, 75, 219, 0.55) 50%,
+    rgba(47, 100, 255, 0.40) 65%,
+    transparent 100%
+  );
+  pointer-events: none;
+  border-radius: 0 0 1px 1px;
+}
+
+/* ── Heading ── */
+.login-heading {
+  text-align: center;
+  margin-bottom: var(--space-8);
+}
+
+.login-title {
+  font-family: var(--font-display);
+  font-size: clamp(28px, 5vw, 38px);
+  font-weight: 400;
+  background: var(--grad-primary);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  margin-bottom: var(--space-2);
+  letter-spacing: -0.6px;
+  line-height: 1.1;
+}
+
+.login-subtitle {
+  font-family: var(--font-primary);
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--color-text-muted);
+}
+
+/* ── Form ── */
+.login-form {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+
+.form-field {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.form-label {
+  font-family: var(--font-primary);
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--color-text-muted);
+}
+
+.input-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.input-icon {
+  position: absolute;
+  left: var(--space-4);
+  color: var(--color-text-soft);
+  pointer-events: none;
+  transition: color var(--t-base);
+  z-index: 1;
+}
+
+.form-input {
+  width: 100%;
+  padding: 13px 14px 13px 44px;
+  background: var(--color-bg-input);
+  border: 1.5px solid var(--color-border);
+  border-radius: var(--radius-md);
+  color: var(--color-text);
+  font-family: var(--font-primary);
+  font-size: 14.5px;
+  font-weight: 400;
+  outline: none;
+  transition: border-color var(--t-base), box-shadow var(--t-base), background var(--t-base);
+  -webkit-appearance: none;
+  appearance: none;
+}
+.form-input::placeholder { color: var(--color-text-soft); }
+
+.form-input:focus {
+  background: var(--color-bg-elevated);
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 3px rgba(47, 100, 255, 0.12);
+}
+.input-wrapper:focus-within .input-icon { color: var(--color-primary); }
+.form-input:disabled { opacity: 0.55; cursor: not-allowed; }
+
+.password-toggle {
+  position: absolute;
+  right: var(--space-4);
+  color: var(--color-text-soft);
+  transition: color var(--t-base);
+  display: flex;
+  align-items: center;
+  z-index: 1;
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+.password-toggle:hover { color: var(--color-primary); }
+
+/* ── Checkbox ── */
+.form-options {
+  display: flex;
+  align-items: center;
+  margin-top: var(--space-1);
+}
+
+.checkbox-wrapper {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  cursor: pointer;
+  user-select: none;
+}
+.checkbox-wrapper input[type="checkbox"] { position: absolute; opacity: 0; pointer-events: none; }
+
+.checkbox-custom {
+  width: 18px;
+  height: 18px;
+  min-width: 18px;
+  border-radius: 5px;
+  border: 1.5px solid var(--color-border);
+  background: var(--color-bg-input);
+  position: relative;
+  flex-shrink: 0;
+  transition: all var(--t-base);
+}
+.checkbox-wrapper input:checked + .checkbox-custom {
+  background: var(--grad-primary);
+  border-color: transparent;
+  box-shadow: 0 2px 8px rgba(47, 100, 255, 0.32);
+}
+.checkbox-wrapper input:checked + .checkbox-custom::after {
+  content: '';
+  position: absolute;
+  left: 5px; top: 1px;
+  width: 5px; height: 10px;
+  border: solid white;
+  border-width: 0 2px 2px 0;
+  transform: rotate(45deg);
+}
+
+.checkbox-label {
+  font-family: var(--font-primary);
+  font-size: 14px;
+  color: var(--color-text-muted);
+  transition: color var(--t-base);
+}
+.checkbox-wrapper:hover .checkbox-label { color: var(--color-text); }
+
+/* ── Error ── */
+.error-message {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: var(--space-3) var(--space-4);
+  background: rgba(254, 51, 70, 0.07);
+  border: 1px solid rgba(254, 51, 70, 0.20);
+  border-radius: var(--radius-md);
+  color: var(--color-danger);
+  font-family: var(--font-primary);
+  font-size: 13px;
+  font-weight: 600;
+  overflow: hidden;
+}
+
+/* ── Submit button ── */
+.submit-button {
+  margin-top: var(--space-2);
+  padding: 14px 24px;
+  background: var(--grad-primary);
+  color: #fff;
+  border-radius: var(--radius-md);
+  font-family: var(--font-primary);
+  font-size: 15px;
+  font-weight: 800;
+  letter-spacing: 0.3px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+  cursor: pointer;
+  transition: all var(--t-base);
+  position: relative;
+  overflow: hidden;
+  border: none;
+  box-shadow: 0 4px 18px rgba(47, 100, 255, 0.35);
+  width: 100%;
+}
+
+/* Shimmer sweep */
+.submit-button::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(105deg, transparent 38%, rgba(255,255,255,0.20) 50%, transparent 62%);
+  transform: translateX(-100%);
+  transition: transform 0.5s var(--ease-smooth);
+}
+.submit-button:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 28px rgba(47, 100, 255, 0.50);
+}
+.submit-button:hover:not(:disabled)::before { transform: translateX(100%); }
+.submit-button:active:not(:disabled) { transform: translateY(0); }
+.submit-button:disabled { opacity: 0.60; cursor: not-allowed; transform: none !important; }
+
+/* Spinner in button */
+.spinner { animation: spin-slow 0.8s linear infinite; }
+
+/* ── Footer ── */
+.login-footer {
+  margin-top: var(--space-6);
+  text-align: center;
+}
+.login-footer p {
+  font-family: var(--font-primary);
+  font-size: 12px;
+  color: var(--color-text-muted);
+  letter-spacing: 0.4px;
+}
+.footer-brand {
+  margin-top: var(--space-2);
+  font-size: 11px !important;
+  opacity: 0.45;
+}
+
+/* ── Responsive ── */
+@media (max-width: 480px) {
+  .login-card {
+    padding: var(--space-6);
+    border-radius: var(--radius-lg);
+  }
+  .login-title { font-size: 26px; }
+}

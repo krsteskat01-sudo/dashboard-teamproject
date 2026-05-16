@@ -1,0 +1,108 @@
+.eb-wrap {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100%;
+  padding: var(--space-8);
+  background: var(--color-bg);
+}
+
+.eb-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  max-width: 480px;
+  width: 100%;
+  padding: var(--space-8);
+  background: var(--color-glass);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-xl);
+}
+
+.eb-icon {
+  width: 72px;
+  height: 72px;
+  border-radius: 50%;
+  background: rgba(254, 51, 70, 0.1);
+  border: 1px solid rgba(254, 51, 70, 0.2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--color-danger);
+  margin-bottom: var(--space-6);
+}
+
+.eb-title {
+  font-family: var(--font-display);
+  font-size: 26px;
+  font-weight: 400;
+  color: var(--color-text);
+  margin-bottom: var(--space-3);
+}
+
+.eb-desc {
+  font-size: 14px;
+  color: var(--color-text-muted);
+  line-height: 1.6;
+  margin-bottom: var(--space-6);
+}
+
+.eb-stack {
+  font-size: 11px;
+  color: var(--color-danger);
+  background: rgba(254, 51, 70, 0.06);
+  border: 1px solid rgba(254, 51, 70, 0.15);
+  border-radius: var(--radius-md);
+  padding: var(--space-4);
+  text-align: left;
+  overflow: auto;
+  max-height: 200px;
+  width: 100%;
+  white-space: pre-wrap;
+  word-break: break-word;
+  margin-bottom: var(--space-6);
+  font-family: monospace;
+}
+
+.eb-actions {
+  display: flex;
+  gap: var(--space-3);
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.eb-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: 10px var(--space-4);
+  border-radius: var(--radius-md);
+  font-size: 14px;
+  font-weight: 600;
+  font-family: var(--font-primary);
+  cursor: pointer;
+  text-decoration: none;
+  border: none;
+  transition: all var(--transition-fast);
+}
+
+.eb-btn--primary {
+  background: var(--color-primary);
+  color: #fff;
+}
+
+.eb-btn--primary:hover {
+  background: var(--color-primary-hover);
+}
+
+.eb-btn--secondary {
+  background: var(--color-glass);
+  border: 1px solid var(--color-border);
+  color: var(--color-text-muted);
+}
+
+.eb-btn--secondary:hover {
+  color: var(--color-text);
+  border-color: rgba(255, 255, 255, 0.18);
+}
