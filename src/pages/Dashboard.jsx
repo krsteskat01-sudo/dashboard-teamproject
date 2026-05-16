@@ -8,7 +8,7 @@ import {
 } from 'recharts'
 import {
   Activity, MapPin, TrendingUp, TrendingDown, Clock,
-  Download, Smartphone, Tablet, Monitor, ChevronRight, AlertCircle, Navigation,
+  Download, Smartphone, Tablet, Monitor, ChevronRight, Navigation,
 } from 'lucide-react'
 import { useAuth } from '../contexts/AuthContext'
 import { useDocumentTitle } from '../hooks/useDocumentTitle'
@@ -22,6 +22,7 @@ import { usePlatformDistribution } from '../hooks/usePlatformDistribution'
 import { useTrendComparison } from '../hooks/useTrendComparison'
 import BillboardsMap from '../components/shared/BillboardsMap'
 import { useBillboards } from '../hooks/useBillboards'
+import { exportToCsv } from '../utils/exportCsv'
 import './Dashboard.css'
 
 // ── Motion variants ──────────────────────────────────────────────────────────
@@ -185,6 +186,11 @@ export default function Dashboard() {
 
   const { billboards: allBillboards } = useBillboards()
 
+  function handleExport() {
+    const rows = trends.weekData.map(d => ({ date: d.date, scans: d.scans }))
+    if (rows.length) exportToCsv(`dashboard-scans-${format(new Date(), 'yyyy-MM-dd')}.csv`, rows)
+  }
+
   const today    = format(new Date(), 'EEEE, MMMM d yyyy')
   const maxScans = billboards.length > 0 ? Math.max(...billboards.map(b => b.scans)) : 1
 
@@ -234,7 +240,7 @@ export default function Dashboard() {
           </h1>
           <p className="dash-date">{today}</p>
         </div>
-        <Button variant="secondary" size="sm" leftIcon={<Download size={15} />}>
+        <Button variant="secondary" size="sm" leftIcon={<Download size={15} />} onClick={handleExport}>
           Export Report
         </Button>
       </motion.div>

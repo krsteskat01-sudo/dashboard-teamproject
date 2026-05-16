@@ -9,10 +9,12 @@ function buildTrends(snap) {
   const oneDayAgo    = new Date(now.getTime() - 86_400_000)
   const sevenDaysAgo = new Date(now.getTime() - 7 * 86_400_000)
 
-  const scans = snap.docs.map(d => ({
-    ...d.data(),
-    ts: d.data().timestamp.toDate(),
-  }))
+  const scans = snap.docs
+    .map(d => {
+      const ts = d.data().timestamp?.toDate?.()
+      return ts ? { ...d.data(), ts } : null
+    })
+    .filter(Boolean)
 
   // Day: hourly bins for last 24 h
   const hourBins = {}

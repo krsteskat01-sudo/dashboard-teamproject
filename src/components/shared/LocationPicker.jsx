@@ -1,6 +1,6 @@
-import { useState, useEffect, useCallback, useRef } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 import { MapContainer, TileLayer, Marker, useMapEvents, useMap } from 'react-leaflet'
-import { Crosshair, MapPin, ChevronDown, Search } from 'lucide-react'
+import { Crosshair, MapPin, Search } from 'lucide-react'
 import '../../utils/leafletConfig.js'
 import './LocationPicker.css'
 
@@ -55,81 +55,14 @@ function FlyOnce({ position }) {
   return null
 }
 
-// Opens upward — panel is absolutely positioned above the trigger
-// No portal needed: the wrapper has overflow:visible and high z-index
-function LocationDropdown({ onSelect }) {
-  const [open,  setOpen]  = useState(false)
-  const [query, setQuery] = useState('')
-  const wrapRef = useRef(null)
-
-  useEffect(() => {
-    if (!open) return
-    const close = (e) => {
-      if (wrapRef.current && !wrapRef.current.contains(e.target)) setOpen(false)
-    }
-    document.addEventListener('mousedown', close)
-    return () => document.removeEventListener('mousedown', close)
-  }, [open])
-
-  const filtered = query.trim()
-    ? SKOPJE_LOCATIONS.filter(l => l.name.toLowerCase().includes(query.toLowerCase()))
-    : SKOPJE_LOCATIONS
-
-  function handleSelect(loc) {
-    onSelect(loc.lat, loc.lng)
-    setOpen(false)
-    setQuery('')
-  }
-
-  return (
-    <div className="loc-dropdown" ref={wrapRef}>
-      <button
-        type="button"
-        className="loc-dropdown__trigger"
-        onClick={() => { setOpen(v => !v); setQuery('') }}
-      >
-        <MapPin size={13} />
-        <span>Skopje locations</span>
-        <ChevronDown size={13} className={`loc-dropdown__chevron ${open ? 'loc-dropdown__chevron--open' : ''}`} />
-      </button>
-
-      {open && (
-        <div className="loc-dropdown__panel">
-          <div className="loc-dropdown__search">
-            <Search size={13} />
-            <input
-              autoFocus
-              type="text"
-              placeholder="Search location…"
-              value={query}
-              onChange={e => setQuery(e.target.value)}
-            />
-          </div>
-          <ul className="loc-dropdown__list">
-            {filtered.length === 0
-              ? <li className="loc-dropdown__empty">No results</li>
-              : filtered.map(loc => (
-                <li key={loc.name}>
-                  <button type="button" onClick={() => handleSelect(loc)}>
-                    <MapPin size={11} />{loc.name}
-                  </button>
-                </li>
-              ))
-            }
-          </ul>
-        </div>
-      )}
-    </div>
-  )
-}
-
 export default function LocationPicker({ initialLat, initialLng, onLocationChange, height = 230 }) {
   const hasInit = initialLat != null && initialLng != null &&
                   !isNaN(Number(initialLat)) && !isNaN(Number(initialLng))
   const initPos = hasInit ? [Number(initialLat), Number(initialLng)] : SKOPJE
 
-  const [position, setPosition] = useState(initPos)
-  const [flyKey,   setFlyKey]   = useState(null)
+  const [position,    setPosition]    = useState(initPos)
+  const [flyKey,      setFlyKey]      = useState(null)
+  const [query,       setQuery]       = useState('')
 
   useEffect(() => {
     onLocationChange({ lat: initPos[0], lng: initPos[1] })
@@ -141,9 +74,10 @@ export default function LocationPicker({ initialLat, initialLng, onLocationChang
     onLocationChange({ lat, lng })
   }, [onLocationChange])
 
-  function handlePreset(lat, lng) {
-    pick(lat, lng)
+  function handleSelect(loc) {
+    pick(loc.lat, loc.lng)
     setFlyKey(k => (k ?? 0) + 1)
+    setQuery('')
   }
 
   const handleDragEnd = (e) => {
@@ -159,19 +93,53 @@ export default function LocationPicker({ initialLat, initialLng, onLocationChang
     }, () => {})
   }
 
+  const suggestions = query.trim().length > 0
+    ? SKOPJE_LOCATIONS.filter(l => l.name.toLowerCase().includes(query.toLowerCase())).slice(0, 6)
+    : []
+
   return (
     <div className="loc-picker">
 
-      {/* Toolbar — overflow:visible so dropdown panel floats above map */}
-      <div className="loc-picker__toolbar">
-        <LocationDropdown onSelect={handlePreset} />
+      {/* Search row */}
+      <div className="loc-picker__search-row">
+        <div className="loc-picker__search-wrap">
+          <Search size={13} className="loc-picker__search-icon" />
+          <input
+            type="text"
+            className="loc-picker__search-input"
+            placeholder="Search Skopje location…"
+            value={query}
+            onChange={e => setQuery(e.target.value)}
+            autoComplete="off"
+          />
+          {query && (
+            <button type="button" className="loc-picker__search-clear" onClick={() => setQuery('')}>×</button>
+          )}
+        </div>
         <button type="button" className="loc-picker__geo-btn" onClick={handleGeolocate}>
           <Crosshair size={13} />
           My Location
         </button>
       </div>
 
-      {/* Coords + hint row */}
+      {/* Inline suggestions — in normal flow, no overlap */}
+      {suggestions.length > 0 && (
+        <div className="loc-picker__suggestions">
+          {suggestions.map(loc => (
+            <button
+              key={loc.name}
+              type="button"
+              className="loc-picker__suggestion"
+              onClick={() => handleSelect(loc)}
+            >
+              <MapPin size={11} />
+              {loc.name}
+            </button>
+          ))}
+        </div>
+      )}
+
+      {/* Coords + hint */}
       <div className="loc-picker__meta">
         <span className="loc-picker__hint">Click map or drag marker to fine-tune</span>
         <span className="loc-picker__coords">
@@ -179,7 +147,7 @@ export default function LocationPicker({ initialLat, initialLng, onLocationChang
         </span>
       </div>
 
-      {/* Map — low z-index, never overlaps toolbar */}
+      {/* Map */}
       <div className="loc-picker__map" style={{ height }}>
         <MapContainer
           center={initPos}

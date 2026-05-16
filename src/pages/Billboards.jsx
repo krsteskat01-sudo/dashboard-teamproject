@@ -351,13 +351,14 @@ function BillboardFormModal({ isOpen, mode, billboard, campaigns, existingCities
     formState: { errors, isSubmitting },
   } = useForm()
 
-  const watchActive = watch('isActive')
-
   const campaignOptions = campaigns.map(c => ({ value: c.id, label: c.name }))
 
   useEffect(() => {
-    if (!isOpen) return
     setRegenWarning(false)
+    if (!isOpen) {
+      setPickedCoords(null)
+      return
+    }
     if (mode === 'edit' && billboard) {
       reset({
         campaignId:   billboard.campaignId,

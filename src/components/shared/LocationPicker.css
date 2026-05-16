@@ -1,21 +1,113 @@
-/* ── Wrapper ── */
 .loc-picker {
   display: flex;
   flex-direction: column;
   gap: var(--space-2);
 }
 
-/* ── Toolbar — must stay ABOVE the map ── */
-.loc-picker__toolbar {
-  position: relative;
-  z-index: 10;          /* above the map block below */
+/* ── Search row ── */
+.loc-picker__search-row {
   display: flex;
   align-items: center;
   gap: var(--space-2);
-  overflow: visible;    /* let dropdown panel escape */
 }
 
-/* ── Meta row: hint + coords ── */
+.loc-picker__search-wrap {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  padding: 0 10px;
+  height: 34px;
+  background: var(--color-bg-card);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  transition: border-color var(--transition-fast);
+}
+.loc-picker__search-wrap:focus-within {
+  border-color: var(--color-primary);
+}
+
+.loc-picker__search-icon { color: var(--color-text-soft); flex-shrink: 0; }
+
+.loc-picker__search-input {
+  flex: 1;
+  background: transparent;
+  border: none;
+  outline: none;
+  font-family: var(--font-primary);
+  font-size: 13px;
+  color: var(--color-text);
+  min-width: 0;
+}
+.loc-picker__search-input::placeholder { color: var(--color-text-soft); }
+
+.loc-picker__search-clear {
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: var(--color-text-soft);
+  font-size: 16px;
+  line-height: 1;
+  padding: 0;
+  flex-shrink: 0;
+  transition: color var(--transition-fast);
+}
+.loc-picker__search-clear:hover { color: var(--color-text); }
+
+/* ── Geolocate ── */
+.loc-picker__geo-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 0 10px;
+  height: 34px;
+  border-radius: var(--radius-sm);
+  font-family: var(--font-primary);
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--color-text-muted);
+  background: var(--color-glass);
+  border: 1px solid var(--color-border);
+  cursor: pointer;
+  white-space: nowrap;
+  flex-shrink: 0;
+  transition: color var(--transition-fast), background var(--transition-fast);
+}
+.loc-picker__geo-btn:hover {
+  color: var(--color-text);
+  background: var(--color-bg-elevated);
+}
+
+/* ── Suggestions — inline flow, wrapping tabs, zero overlap ── */
+.loc-picker__suggestions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-1);
+}
+
+.loc-picker__suggestion {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 4px 10px;
+  border-radius: var(--radius-full);
+  font-family: var(--font-primary);
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--color-primary);
+  background: rgba(47, 100, 255, 0.08);
+  border: 1px solid rgba(47, 100, 255, 0.2);
+  cursor: pointer;
+  transition: background var(--transition-fast), color var(--transition-fast), border-color var(--transition-fast);
+  white-space: nowrap;
+}
+.loc-picker__suggestion:hover {
+  background: rgba(47, 100, 255, 0.16);
+  border-color: rgba(47, 100, 255, 0.4);
+  color: var(--color-primary);
+}
+
+/* ── Meta: hint + coords ── */
 .loc-picker__meta {
   display: flex;
   align-items: center;
@@ -36,152 +128,9 @@
   white-space: nowrap;
 }
 
-/* ── Geolocate button ── */
-.loc-picker__geo-btn {
-  display: inline-flex;
-  align-items: center;
-  gap: 5px;
-  padding: 6px 10px;
-  border-radius: var(--radius-sm);
-  font-family: var(--font-primary);
-  font-size: 12px;
-  font-weight: 600;
-  color: var(--color-text-muted);
-  background: var(--color-glass);
-  border: 1px solid var(--color-border);
-  cursor: pointer;
-  white-space: nowrap;
-  flex-shrink: 0;
-  transition: color var(--transition-fast), background var(--transition-fast);
-}
-.loc-picker__geo-btn:hover {
-  color: var(--color-text);
-  background: var(--color-bg-elevated);
-}
-
-/* ── Map — isolated stacking context, LOW z-index ── */
+/* ── Map ── */
 .loc-picker__map {
-  position: relative;
-  z-index: 1;
   border-radius: var(--radius-md);
   overflow: hidden;
   border: 1px solid var(--color-border);
-}
-
-/* ── Dropdown wrapper ── */
-.loc-dropdown {
-  position: relative;
-  flex: 1;
-  min-width: 0;
-  /* overflow:visible so panel can escape upward */
-  overflow: visible;
-}
-
-/* ── Trigger button ── */
-.loc-dropdown__trigger {
-  width: 100%;
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  padding: 7px 11px;
-  border-radius: var(--radius-sm);
-  font-family: var(--font-primary);
-  font-size: 12px;
-  font-weight: 600;
-  color: var(--color-text-muted);
-  background: var(--color-bg-card);
-  border: 1px solid var(--color-border);
-  cursor: pointer;
-  text-align: left;
-  transition: color var(--transition-fast), border-color var(--transition-fast);
-}
-.loc-dropdown__trigger:hover {
-  color: var(--color-text);
-  border-color: var(--color-primary);
-}
-.loc-dropdown__trigger span {
-  flex: 1;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
-
-.loc-dropdown__chevron {
-  flex-shrink: 0;
-  transition: transform 0.18s ease;
-}
-.loc-dropdown__chevron--open { transform: rotate(180deg); }
-
-/* ── Panel — opens UPWARD above the trigger ── */
-.loc-dropdown__panel {
-  position: absolute;
-  bottom: calc(100% + 6px);   /* sit above the trigger */
-  left: 0;
-  right: 0;
-  z-index: 9999;
-  background: var(--color-bg-card);
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius-md);
-  box-shadow: 0 -4px 24px rgba(0, 0, 0, 0.18), 0 2px 8px rgba(0, 0, 0, 0.08);
-  overflow: hidden;
-}
-
-/* ── Search row ── */
-.loc-dropdown__search {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  padding: 8px 12px;
-  border-bottom: 1px solid var(--color-border-soft);
-  color: var(--color-text-muted);
-}
-.loc-dropdown__search input {
-  flex: 1;
-  background: transparent;
-  border: none;
-  outline: none;
-  font-family: var(--font-primary);
-  font-size: 13px;
-  color: var(--color-text);
-}
-.loc-dropdown__search input::placeholder { color: var(--color-text-soft); }
-
-/* ── List ── */
-.loc-dropdown__list {
-  list-style: none;
-  max-height: 200px;
-  overflow-y: auto;
-  scrollbar-width: thin;
-  scrollbar-color: var(--scroll-thumb) transparent;
-  padding: 4px 0;
-}
-.loc-dropdown__list::-webkit-scrollbar       { width: 4px; }
-.loc-dropdown__list::-webkit-scrollbar-track { background: transparent; }
-.loc-dropdown__list::-webkit-scrollbar-thumb { background: var(--scroll-thumb); border-radius: 2px; }
-
-.loc-dropdown__list li button {
-  width: 100%;
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  padding: 7px 14px;
-  background: none;
-  border: none;
-  cursor: pointer;
-  font-family: var(--font-primary);
-  font-size: 13px;
-  color: var(--color-text-muted);
-  text-align: left;
-  transition: background var(--transition-fast), color var(--transition-fast);
-}
-.loc-dropdown__list li button:hover {
-  background: rgba(47, 100, 255, 0.07);
-  color: var(--color-text);
-}
-
-.loc-dropdown__empty {
-  padding: 12px 14px;
-  font-size: 13px;
-  color: var(--color-text-soft);
-  text-align: center;
 }
