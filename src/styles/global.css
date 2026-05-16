@@ -109,11 +109,12 @@
 
   /* Surfaces */
   --color-bg:           #F5F7FF;
-  --color-bg-elevated:  rgba(255, 255, 255, 0.88);
-  --color-bg-glass:     rgba(255, 255, 255, 0.62);
-  --color-bg-sidebar:   rgba(255, 255, 255, 0.82);
-  --color-bg-input:     rgba(255, 255, 255, 0.75);
-  --color-bg-overlay:   rgba(245, 247, 255, 0.90);
+  --color-bg-elevated:  #FFFFFF;
+  --color-bg-glass:     #FFFFFF;
+  --color-bg-sidebar:   #FFFFFF;
+  --color-bg-input:     #FFFFFF;
+  --color-bg-overlay:   #F5F7FF;
+  --color-bg-card:      #FFFFFF;
 
   /* Text */
   --color-text:       #0D1B3E;
@@ -125,7 +126,7 @@
   --color-border:       rgba(47, 100, 255, 0.12);
   --color-border-soft:  rgba(0, 0, 0, 0.06);
   --color-border-hover: rgba(47, 100, 255, 0.28);
-  --color-glass:        rgba(255, 255, 255, 0.55);
+  --color-glass:        #F0F4FF;
 
   /* Shadows */
   --shadow-xs:   0 1px 3px  rgba(47, 100, 255, 0.06);
@@ -192,11 +193,12 @@
 
   /* Surfaces */
   --color-bg:           #0B0F1E;
-  --color-bg-elevated:  rgba(14, 20, 42, 0.92);
-  --color-bg-glass:     rgba(14, 20, 42, 0.68);
-  --color-bg-sidebar:   rgba(9, 13, 28, 0.90);
-  --color-bg-input:     rgba(255, 255, 255, 0.06);
-  --color-bg-overlay:   rgba(9, 13, 28, 0.92);
+  --color-bg-elevated:  #0E1428;
+  --color-bg-glass:     #0E1428;
+  --color-bg-sidebar:   #090D1C;
+  --color-bg-input:     #131A2E;
+  --color-bg-overlay:   #090D1C;
+  --color-bg-card:      #0E1428;
 
   /* Text */
   --color-text:       #EEF2FF;
@@ -208,7 +210,7 @@
   --color-border:       rgba(107, 159, 255, 0.14);
   --color-border-soft:  rgba(255, 255, 255, 0.06);
   --color-border-hover: rgba(107, 159, 255, 0.32);
-  --color-glass:        rgba(255, 255, 255, 0.04);
+  --color-glass:        #141C30;
 
   /* Shadows */
   --shadow-xs:   0 1px 3px  rgba(0, 0, 0, 0.35);
@@ -381,7 +383,7 @@ ul, ol          { list-style: none; }
   bottom: var(--space-3);
   left: 50%;
   transform: translateX(-50%);
-  background: var(--color-bg-glass);
+  background: var(--color-bg-elevated);
   border: 1px solid var(--color-border);
   border-radius: var(--radius-sm);
   padding: 6px 14px;
@@ -390,7 +392,6 @@ ul, ol          { list-style: none; }
   white-space: nowrap;
   pointer-events: none;
   z-index: 1000;
-  backdrop-filter: blur(10px);
 }
 .bmap-popup-content { padding: 14px 16px; min-width: 190px; }
 .bmap-popup-header  { display: flex; align-items: center; gap: 8px; margin-bottom: 4px; }

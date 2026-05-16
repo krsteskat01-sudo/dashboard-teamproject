@@ -80,7 +80,7 @@
   display: flex;
   align-items: center;
   gap: var(--space-4);
-  background: var(--color-glass);
+  background: var(--color-bg-elevated);
   border: 1px solid var(--color-border);
   border-radius: var(--radius-lg);
   padding: var(--space-4) var(--space-6);
@@ -166,8 +166,8 @@
 
 .scan-clear-btn:hover {
   color: var(--color-text);
-  border-color: rgba(255, 255, 255, 0.18);
-  background: var(--color-glass);
+  border-color: var(--color-border-hover);
+  background: var(--color-bg-elevated);
 }
 
 /* ── Error banner ── */
@@ -210,7 +210,7 @@
   letter-spacing: 0.7px;
   white-space: nowrap;
   border-bottom: 1px solid var(--color-border);
-  background: var(--color-glass);
+  background: var(--color-bg-elevated);
 }
 
 .scans-table td {
@@ -231,7 +231,7 @@
 }
 
 .scan-row:hover {
-  background: rgba(255, 255, 255, 0.04);
+  background: var(--color-bg-card, var(--color-bg-elevated));
 }
 
 /* Green flash for new rows */
@@ -270,8 +270,7 @@
 }
 
 .scan-muted {
-  color: var(--color-text-muted);
-  opacity: 0.5;
+  color: var(--color-text-soft);
 }
 
 /* Delete button — hidden until row hover */
