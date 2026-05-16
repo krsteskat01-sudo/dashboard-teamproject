@@ -1,0 +1,146 @@
+.input-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.input-wrapper--full {
+  width: 100%;
+}
+
+.input-label {
+  font-family: var(--font-primary);
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--color-text-muted);
+  letter-spacing: 0.3px;
+}
+
+/* ── Inner layout ── */
+.input-inner {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+/* ── Field ── */
+.input-field {
+  width: 100%;
+  padding: 12px 14px;
+  background: var(--color-glass);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  color: var(--color-text);
+  font-family: var(--font-primary);
+  font-size: 14px;
+  outline: none;
+  transition: all var(--transition-base);
+  -webkit-appearance: none;
+  appearance: none;
+}
+
+.input-field::placeholder {
+  color: rgba(148, 163, 184, 0.45);
+}
+
+.input-field:focus {
+  background: rgba(255, 255, 255, 0.06);
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 3px rgba(47, 100, 255, 0.12);
+}
+
+.input-field--has-left  { padding-left: 42px; }
+.input-field--has-right { padding-right: 42px; }
+
+.input-field--error {
+  border-color: rgba(254, 51, 70, 0.5);
+  background: rgba(254, 51, 70, 0.04);
+}
+.input-field--error:focus {
+  border-color: var(--color-danger);
+  box-shadow: 0 0 0 3px rgba(254, 51, 70, 0.12);
+}
+
+.input-field--success {
+  border-color: rgba(34, 197, 94, 0.4);
+}
+.input-field--success:focus {
+  border-color: var(--color-success);
+  box-shadow: 0 0 0 3px rgba(34, 197, 94, 0.12);
+}
+
+.input-field--disabled,
+.input-field:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* ── Icons ── */
+.input-icon {
+  position: absolute;
+  display: flex;
+  align-items: center;
+  color: var(--color-text-muted);
+  pointer-events: none;
+  transition: color var(--transition-base);
+}
+
+.input-icon--left  { left: 14px; }
+.input-icon--right { right: 14px; }
+
+.input-inner:focus-within .input-icon--left {
+  color: var(--color-primary);
+}
+
+.input-icon--btn {
+  pointer-events: auto;
+  cursor: pointer;
+  background: none;
+  border: none;
+  padding: 0;
+}
+.input-icon--btn:hover { color: var(--color-text); }
+
+.input-icon--error   { color: var(--color-danger) !important; }
+.input-icon--success { color: var(--color-success) !important; }
+
+/* ── Addons ── */
+.input-addon {
+  display: flex;
+  align-items: center;
+  padding: 0 var(--space-3);
+  height: 100%;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid var(--color-border);
+  color: var(--color-text-muted);
+  font-family: var(--font-primary);
+  font-size: 13px;
+  white-space: nowrap;
+  align-self: stretch;
+}
+.input-addon--left {
+  border-right: none;
+  border-radius: var(--radius-md) 0 0 var(--radius-md);
+}
+.input-addon--right {
+  border-left: none;
+  border-radius: 0 var(--radius-md) var(--radius-md) 0;
+}
+.input-inner:has(.input-addon--left) .input-field {
+  border-radius: 0 var(--radius-md) var(--radius-md) 0;
+}
+.input-inner:has(.input-addon--right) .input-field {
+  border-radius: var(--radius-md) 0 0 var(--radius-md);
+}
+
+/* ── Helper / error text ── */
+.input-helper {
+  font-family: var(--font-primary);
+  font-size: 12px;
+  color: var(--color-text-muted);
+  margin: 0;
+}
+
+.input-helper--error {
+  color: var(--color-danger);
+}

@@ -1,0 +1,76 @@
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  border-radius: 100px;
+  font-family: var(--font-primary);
+  font-weight: 600;
+  white-space: nowrap;
+  letter-spacing: 0.3px;
+  border: 1px solid transparent;
+}
+
+/* ── Sizes ── */
+.badge--sm { padding: 3px 9px;  font-size: 11px; }
+.badge--md { padding: 4px 12px; font-size: 12px; }
+
+/* ── Filled variants ── */
+.badge--default {
+  background: rgba(148, 163, 184, 0.12);
+  color: var(--color-text-muted);
+}
+.badge--primary {
+  background: rgba(47, 100, 255, 0.12);
+  color: var(--color-primary);
+}
+.badge--success {
+  background: rgba(34, 197, 94, 0.12);
+  color: var(--color-success);
+}
+.badge--warning {
+  background: rgba(245, 158, 11, 0.12);
+  color: var(--color-warning);
+}
+.badge--danger {
+  background: rgba(254, 51, 70, 0.12);
+  color: var(--color-danger);
+}
+.badge--info {
+  background: rgba(254, 212, 69, 0.12);
+  color: var(--color-accent-yellow);
+}
+
+/* ── Outline variants ── */
+.badge--outline.badge--default {
+  background: transparent;
+  border-color: rgba(148, 163, 184, 0.3);
+}
+.badge--outline.badge--primary {
+  background: transparent;
+  border-color: rgba(47, 100, 255, 0.4);
+}
+.badge--outline.badge--success {
+  background: transparent;
+  border-color: rgba(34, 197, 94, 0.4);
+}
+.badge--outline.badge--warning {
+  background: transparent;
+  border-color: rgba(245, 158, 11, 0.4);
+}
+.badge--outline.badge--danger {
+  background: transparent;
+  border-color: rgba(254, 51, 70, 0.4);
+}
+.badge--outline.badge--info {
+  background: transparent;
+  border-color: rgba(254, 212, 69, 0.4);
+}
+
+/* ── Dot ── */
+.badge__dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: currentColor;
+  flex-shrink: 0;
+}

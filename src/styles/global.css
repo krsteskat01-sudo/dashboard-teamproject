@@ -1,0 +1,381 @@
+/* ============================================
+   FONT FACES
+   ============================================ */
+
+/* Raleway - Variable Font (сите тежини во еден фајл) */
+@font-face {
+  font-family: 'Raleway';
+  src: url('../assets/fonts/Raleway/Raleway-VariableFont_wght.ttf') format('truetype-variations');
+  font-weight: 100 900;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Raleway';
+  src: url('../assets/fonts/Raleway/Raleway-Italic-VariableFont_wght.ttf') format('truetype-variations');
+  font-weight: 100 900;
+  font-style: italic;
+  font-display: swap;
+}
+
+/* Yeseva One - за наслови */
+@font-face {
+  font-family: 'Yeseva One';
+  src: url('../assets/fonts/Yeseva_One/YesevaOne-Regular.ttf') format('truetype');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* Manufacturing Consent - за tags */
+@font-face {
+  font-family: 'Manufacturing Consent';
+  src: url('../assets/fonts/Manufacturing_Consent/ManufacturingConsent-Regular.ttf') format('truetype');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* College Boy - за fun labels */
+@font-face {
+  font-family: 'College Boy';
+  src: url('../assets/fonts/College_boy/College Boy.otf') format('opentype');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+
+
+
+/* CSS Reset */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html, body {
+  height: 100%;
+  font-family: 'Raleway', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-weight: 400;
+  background-color: #0B1020;
+  color: #F9F9F9;
+  -webkit-font-smoothing: antialiased;
+}
+
+#root {
+  min-height: 100vh;
+}
+
+/* Design Tokens */
+:root {
+
+  /* Fonts */
+  --font-primary: 'Raleway', sans-serif;
+  --font-display: 'Yeseva One', serif;
+  --font-tags: 'Manufacturing Consent', monospace;
+  --font-fun: 'College Boy', sans-serif;
+
+  /* Colors */
+  --color-primary: #2F64FF;
+  --color-primary-hover: #225AFF;
+  --color-primary-dark: #234BDB;
+  --color-accent-yellow: #FED445;
+  --color-accent-pink: #FFA9C4;
+  --color-danger: #FE3346;
+  --color-success: #22C55E;
+  --color-warning: #F59E0B;
+  
+  --color-bg: #0B1020;
+  --color-bg-elevated: #131A2E;
+  --color-text: #F9F9F9;
+  --color-text-muted: #94A3B8;
+  --color-border: rgba(255, 255, 255, 0.08);
+  --color-glass: rgba(255, 255, 255, 0.04);
+  
+  /* Spacing */
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-6: 24px;
+  --space-8: 32px;
+  --space-12: 48px;
+  
+  /* Radius */
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 16px;
+  --radius-xl: 24px;
+  
+  /* Transitions */
+  --transition-fast: 150ms ease;
+  --transition-base: 250ms ease;
+  --transition-slow: 400ms ease;
+}
+
+/* Scrollbar styling */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--color-bg);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--color-glass);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-border);
+}
+
+/* ── Leaflet map overrides ────────────────────────────────────────────────── */
+
+/* Dark-themed popups */
+.leaflet-popup-content-wrapper {
+  background: #131A2E !important;
+  border: 1px solid rgba(255, 255, 255, 0.10) !important;
+  border-radius: 12px !important;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5) !important;
+  padding: 0 !important;
+  color: #F9F9F9 !important;
+  font-family: 'Raleway', sans-serif !important;
+}
+
+.leaflet-popup-tip {
+  background: #131A2E !important;
+}
+
+.leaflet-popup-content {
+  margin: 0 !important;
+  line-height: 1.5 !important;
+}
+
+/* Remove default marker shadow interference */
+.billboard-map-marker {
+  background: transparent !important;
+  border: none !important;
+}
+
+.billboard-map-marker:hover > div {
+  transform: scale(1.12);
+}
+
+/* Attribution text dimmed */
+.leaflet-control-attribution {
+  background: rgba(11, 16, 32, 0.75) !important;
+  color: rgba(255, 255, 255, 0.35) !important;
+  font-size: 10px !important;
+}
+
+.leaflet-control-attribution a {
+  color: rgba(255, 255, 255, 0.45) !important;
+}
+
+/* Zoom controls */
+.leaflet-control-zoom a {
+  background: #131A2E !important;
+  border-color: rgba(255, 255, 255, 0.10) !important;
+  color: #94A3B8 !important;
+}
+
+.leaflet-control-zoom a:hover {
+  background: #1D2640 !important;
+  color: #F9F9F9 !important;
+}
+
+/* ── BillboardsMap component styles ──────────────────────────────────────── */
+
+.bmap-container {
+  position: relative;
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  background: #0D1526;
+}
+
+.bmap-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-3);
+  height: 100%;
+  color: var(--color-text-muted);
+  font-size: 14px;
+}
+
+.bmap-notice {
+  position: absolute;
+  bottom: var(--space-3);
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(11, 16, 32, 0.85);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: var(--radius-sm);
+  padding: 6px 14px;
+  font-size: 12px;
+  color: var(--color-text-muted);
+  white-space: nowrap;
+  pointer-events: none;
+  z-index: 1000;
+}
+
+/* Popup content */
+.bmap-popup-content {
+  padding: 14px 16px;
+  min-width: 180px;
+}
+
+.bmap-popup-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 4px;
+}
+
+.bmap-popup-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.bmap-popup-dot--active   { background: #22C55E; }
+.bmap-popup-dot--inactive { background: #475569; }
+
+.bmap-popup-name {
+  font-size: 14px;
+  font-weight: 700;
+  color: #F9F9F9;
+}
+
+.bmap-popup-city {
+  font-size: 12px;
+  color: #94A3B8;
+  margin-bottom: 10px;
+  padding-left: 16px;
+}
+
+.bmap-popup-stats {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 12px;
+}
+
+.bmap-popup-scans {
+  font-size: 13px;
+  font-weight: 600;
+  color: #2F64FF;
+}
+
+.bmap-popup-status {
+  font-size: 11px;
+  font-weight: 600;
+  padding: 2px 8px;
+  border-radius: 20px;
+}
+
+.bmap-popup-status.active {
+  background: rgba(34, 197, 94, 0.12);
+  color: #22C55E;
+}
+
+.bmap-popup-status.inactive {
+  background: rgba(71, 85, 105, 0.15);
+  color: #94A3B8;
+}
+
+.bmap-popup-btn {
+  width: 100%;
+  padding: 7px 0;
+  background: var(--color-primary);
+  border: none;
+  border-radius: var(--radius-sm);
+  color: #fff;
+  font-family: 'Raleway', sans-serif;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background var(--transition-fast);
+}
+
+.bmap-popup-btn:hover {
+  background: var(--color-primary-hover);
+}
+
+/* Mini popup (dashboard widget) */
+.bmap-popup-mini {
+  padding: 10px 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.bmap-popup-mini strong {
+  font-size: 13px;
+  color: #F9F9F9;
+}
+
+.bmap-popup-mini span {
+  font-size: 11px;
+  color: #94A3B8;
+}
+
+/* Dashboard map card */
+.dash-map-card {
+  margin-top: 0;
+}
+
+.dash-map-link {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--color-primary);
+  transition: opacity var(--transition-fast);
+}
+
+.dash-map-link:hover {
+  opacity: 0.8;
+}
+
+.dash-map-wrap {
+  margin-top: var(--space-4);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+}
+
+/* Billboards map view wrapper */
+.billboards-map-view {
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+}
+
+/* Buttons reset */
+button {
+  font-family: inherit;
+  cursor: pointer;
+  border: none;
+  background: none;
+  color: inherit;
+}
+
+/* Inputs reset */
+input, select, textarea {
+  font-family: inherit;
+  color: inherit;
+}
+
+/* Links reset */
+a {
+  color: inherit;
+  text-decoration: none;
+}

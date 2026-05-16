@@ -1,0 +1,102 @@
+/* ── Spinner ── */
+.spinner {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.spinner svg {
+  width: 100%;
+  height: 100%;
+  animation: spinner-rotate 0.75s linear infinite;
+}
+
+@keyframes spinner-rotate {
+  to { transform: rotate(360deg); }
+}
+
+/* Track (background ring) */
+.spinner__track {
+  stroke: var(--color-border);
+}
+
+/* Animated arc */
+.spinner__fill {
+  stroke-linecap: round;
+  stroke-dasharray: 48 100;
+  transform-origin: center;
+}
+
+.spinner--primary .spinner__fill { stroke: var(--color-primary); }
+.spinner--white   .spinner__fill { stroke: #fff; }
+.spinner--muted   .spinner__fill { stroke: var(--color-text-muted); }
+
+/* ── Full-page overlay ── */
+.spinner-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(11, 16, 32, 0.7);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+}
+
+.spinner-page-inner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-4);
+}
+
+/* ── Labeled inline spinner ── */
+.spinner-labeled {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-3);
+}
+
+.spinner__label {
+  font-family: var(--font-primary);
+  font-size: 14px;
+  color: var(--color-text-muted);
+  margin: 0;
+}
+
+/* ── Skeleton ── */
+.skeleton {
+  display: block;
+  border-radius: var(--radius-sm);
+  background: var(--color-glass);
+  flex-shrink: 0;
+}
+
+.skeleton--animate {
+  background: linear-gradient(
+    90deg,
+    var(--color-glass)                   25%,
+    rgba(255, 255, 255, 0.07)             50%,
+    var(--color-glass)                   75%
+  );
+  background-size: 300% 100%;
+  animation: skeleton-shimmer 1.6s ease-in-out infinite;
+}
+
+@keyframes skeleton-shimmer {
+  0%   { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+
+.skeleton--text   { border-radius: 4px; }
+.skeleton--circle { border-radius: 50%; }
+.skeleton--rect   { border-radius: var(--radius-md); }
+
+.skeleton-lines {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}

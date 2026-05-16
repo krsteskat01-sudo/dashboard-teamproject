@@ -1,0 +1,497 @@
+/* ── Page shell ── */
+.dashboard {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-6);
+  min-height: 100%;
+}
+
+/* ── Page header ── */
+.dash-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--space-4);
+  flex-wrap: wrap;
+}
+
+.dash-greeting {
+  font-family: var(--font-display);
+  font-size: 26px;
+  font-weight: 400;
+  color: var(--color-text);
+  margin-bottom: var(--space-1);
+  line-height: 1.25;
+}
+
+.dash-date {
+  font-family: var(--font-primary);
+  font-size: 13px;
+  color: var(--color-text-muted);
+}
+
+/* ── KPI grid ── */
+.kpi-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: var(--space-4);
+}
+
+/* ── KPI Card internals ── */
+.kpi-card {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+.kpi-top {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+}
+
+.kpi-icon {
+  width: 40px;
+  height: 40px;
+  border-radius: var(--radius-sm);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.kpi-label {
+  font-family: var(--font-primary);
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--color-text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+}
+
+.kpi-value {
+  font-family: var(--font-display);
+  font-size: 32px;
+  font-weight: 400;
+  color: var(--color-text);
+  line-height: 1;
+  letter-spacing: -0.5px;
+}
+
+.kpi-trend {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-family: var(--font-primary);
+  font-size: 12px;
+  font-weight: 500;
+}
+
+.kpi-trend--up   { color: var(--color-success); }
+.kpi-trend--down { color: var(--color-danger);  }
+.kpi-trend-gap   { height: 16px; }
+
+.kpi-sparkline {
+  margin-top: auto;
+}
+
+/* Skeleton helpers inside KPI card */
+.kpi-skel-row {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+}
+
+/* ── Main grid (60/40) ── */
+.dash-main-grid {
+  display: grid;
+  grid-template-columns: 3fr 2fr;
+  gap: var(--space-4);
+  align-items: start;
+}
+
+/* ── Card shared labels ── */
+.dash-card-title {
+  font-family: var(--font-display);
+  font-size: 17px;
+  font-weight: 400;
+  color: var(--color-text);
+  margin: 0;
+}
+
+.dash-card-subtitle {
+  font-family: var(--font-primary);
+  font-size: 12px;
+  color: var(--color-text-muted);
+  margin-top: 3px;
+}
+
+/* ── Range toggle (Day / Week / Month) ── */
+.range-toggle {
+  display: flex;
+  gap: 2px;
+  background: var(--color-glass);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  padding: 3px;
+}
+
+.range-btn {
+  padding: 5px 12px;
+  border-radius: 6px;
+  font-family: var(--font-primary);
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--color-text-muted);
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  white-space: nowrap;
+}
+
+.range-btn:hover { color: var(--color-text); }
+
+.range-btn--active {
+  background: var(--color-bg-elevated);
+  color: var(--color-text);
+  border: 1px solid var(--color-border);
+}
+
+.range-btn--active:hover { color: var(--color-text); }
+
+/* ── Chart wrapper (removes default recharts margin issue) ── */
+.dash-chart-wrap {
+  margin-top: var(--space-4);
+}
+
+/* ── Custom chart tooltip ── */
+.dash-chart-tooltip {
+  background: rgba(19, 26, 46, 0.95);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: var(--radius-md);
+  padding: var(--space-3) var(--space-4);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+
+.dash-chart-tooltip-date {
+  font-family: var(--font-primary);
+  font-size: 11px;
+  color: var(--color-text-muted);
+  margin-bottom: 3px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.dash-chart-tooltip-value {
+  font-family: var(--font-display);
+  font-size: 18px;
+  font-weight: 400;
+  color: var(--color-text);
+}
+
+/* ── Live Activity Feed ── */
+.activity-list {
+  list-style: none;
+  max-height: 380px;
+  overflow-y: auto;
+  margin-top: var(--space-2);
+}
+
+.activity-list::-webkit-scrollbar       { width: 4px; }
+.activity-list::-webkit-scrollbar-track { background: transparent; }
+.activity-list::-webkit-scrollbar-thumb {
+  background: var(--color-border);
+  border-radius: 2px;
+}
+
+.activity-item {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  padding: var(--space-3) var(--space-2);
+  border-radius: var(--radius-sm);
+  transition: background var(--transition-fast);
+  cursor: default;
+}
+
+.activity-item:hover { background: var(--color-glass); }
+
+.activity-device {
+  width: 32px;
+  height: 32px;
+  border-radius: var(--radius-sm);
+  background: var(--color-glass);
+  border: 1px solid var(--color-border);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--color-text-muted);
+  flex-shrink: 0;
+}
+
+.activity-info {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.activity-location {
+  font-family: var(--font-primary);
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--color-text);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Inline platform tag (custom colors) */
+.dash-platform-tag {
+  display: inline-block;
+  padding: 2px 8px;
+  border-radius: 100px;
+  font-family: var(--font-primary);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.2px;
+}
+
+.activity-time {
+  font-family: var(--font-primary);
+  font-size: 11px;
+  color: var(--color-text-muted);
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.activity-footer {
+  margin-top: var(--space-4);
+  padding-top: var(--space-4);
+  border-top: 1px solid var(--color-border);
+}
+
+.activity-viewall {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1);
+  font-family: var(--font-primary);
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--color-primary);
+  transition: opacity var(--transition-fast);
+}
+
+.activity-viewall:hover { opacity: 0.75; }
+
+/* ── Bottom row (50/50) ── */
+.dash-bottom-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-4);
+  align-items: start;
+}
+
+/* ── Top Billboards list ── */
+.billboard-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  margin-top: var(--space-2);
+}
+
+.billboard-item {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+}
+
+.billboard-rank {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: var(--color-glass);
+  border: 1px solid var(--color-border);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-primary);
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--color-text-muted);
+  flex-shrink: 0;
+}
+
+.billboard-info {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.billboard-location-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-2);
+}
+
+.billboard-location {
+  font-family: var(--font-primary);
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--color-text);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.billboard-change {
+  font-family: var(--font-primary);
+  font-size: 11px;
+  font-weight: 600;
+  flex-shrink: 0;
+}
+
+.billboard-change--up   { color: var(--color-success); }
+.billboard-change--down { color: var(--color-danger);  }
+
+.billboard-bar-track {
+  height: 5px;
+  background: var(--color-glass);
+  border-radius: 3px;
+  overflow: hidden;
+}
+
+.billboard-bar-fill {
+  height: 100%;
+  border-radius: 3px;
+  background: linear-gradient(90deg, var(--color-primary), #6B9FFF);
+}
+
+.billboard-scans {
+  font-family: var(--font-primary);
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--color-text);
+  flex-shrink: 0;
+  min-width: 52px;
+  text-align: right;
+}
+
+/* ── Platform donut ── */
+.platform-donut-wrap {
+  position: relative;
+  margin-top: var(--space-2);
+}
+
+.platform-donut-center {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+  pointer-events: none;
+}
+
+.platform-donut-total {
+  display: block;
+  font-family: var(--font-display);
+  font-size: 22px;
+  font-weight: 400;
+  color: var(--color-text);
+  line-height: 1.1;
+}
+
+.platform-donut-label {
+  display: block;
+  font-family: var(--font-primary);
+  font-size: 11px;
+  color: var(--color-text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+  margin-top: 2px;
+}
+
+/* ── Platform legend ── */
+.platform-legend {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  padding: var(--space-2) 0;
+}
+
+.platform-legend-item {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+}
+
+.platform-legend-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.platform-legend-name {
+  flex: 1;
+  font-family: var(--font-primary);
+  font-size: 13px;
+  color: var(--color-text-muted);
+}
+
+.platform-legend-pct {
+  font-family: var(--font-primary);
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--color-text);
+}
+
+/* ── Skeleton shimmer helpers ── */
+.dash-skel-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: var(--space-4);
+  padding-bottom: var(--space-4);
+  border-bottom: 1px solid var(--color-border);
+}
+
+.dash-skel-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+
+.dash-skel-row {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+}
+
+/* ── Responsive ── */
+@media (max-width: 1280px) {
+  .kpi-value { font-size: 28px; }
+}
+
+@media (max-width: 1100px) {
+  .dash-main-grid   { grid-template-columns: 1fr; }
+  .dash-bottom-grid { grid-template-columns: 1fr; }
+}
+
+@media (max-width: 768px) {
+  .kpi-grid   { grid-template-columns: repeat(2, 1fr); }
+  .dash-greeting { font-size: 22px; }
+  .kpi-value { font-size: 26px; }
+}
+
+@media (max-width: 480px) {
+  .kpi-grid { grid-template-columns: 1fr 1fr; gap: var(--space-3); }
+}
